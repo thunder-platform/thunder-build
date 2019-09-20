@@ -1,0 +1,14 @@
+<Project>
+  <Import Project="Imports.props" />
+
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+  <Target Name="Clean" />
+  <Target Name="Build" />
+  <Target Name="Test" />
+  <Target Name="Pack" />
+  <Target Name="IntegrationTest" />
+  <Target Name="PerformanceTest" />
+
+  <!-- Repository extension point -->
+  <Import Project="$(RepositoryEngineeringDir)\AfterSolutionBuild.targets" Condition="Exists('$(RepositoryEngineeringDir)\AfterSolutionBuild.targets')"/>
+</Project>

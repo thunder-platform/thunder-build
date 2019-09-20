@@ -1,0 +1,15 @@
+﻿<Project>
+  <PropertyGroup Label="Package Versions: Auto">
+    <FluentAssertionsPackageVersion>5.8.0</FluentAssertionsPackageVersion>
+    <MicrosoftBuildPackageVersion>15.9.20</MicrosoftBuildPackageVersion>
+    <MicrosoftBuildTasksCorePackageVersion>15.9.20</MicrosoftBuildTasksCorePackageVersion>
+    <MicrosoftNETTestSdkPackageVersion>16.2.0</MicrosoftNETTestSdkPackageVersion>
+    <MoqPackageVersion>4.12.0</MoqPackageVersion>
+    <NewtonsoftJsonPackageVersion>12.0.2</NewtonsoftJsonPackageVersion>
+    <NuGetBuildTasksPackageVersion>5.1.0</NuGetBuildTasksPackageVersion>
+    <StyleCopAnalyzersPackageVersion>1.1.118</StyleCopAnalyzersPackageVersion>
+    <XunitPackageVersion>2.4.1</XunitPackageVersion>
+    <XunitRunnerVisualstudioPackageVersion>2.4.1</XunitRunnerVisualstudioPackageVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Package Versions: Pinned" />
+</Project>

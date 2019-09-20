@@ -1,0 +1,13 @@
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!--
+      When the bootstrapper script initializes a repo it restores an empty project that imports the toolset SDK.
+      It invokes WriteToolsetLocation target with __ToolsetLocationOutputFile set to the path where the location of
+      SDK Build.proj entry point is to be stored. Suppress all other imports for that project.
+    -->
+    <_SuppressSdkImports>false</_SuppressSdkImports>
+    <_SuppressSdkImports Condition="'$(__ToolsetLocationOutputFile)' != ''">true</_SuppressSdkImports>
+  </PropertyGroup>
+
+  <Import Project="..\tools\Imports.props" Condition="!$(_SuppressSdkImports)" />
+</Project>

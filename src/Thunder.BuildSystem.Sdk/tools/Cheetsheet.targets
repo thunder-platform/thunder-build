@@ -1,0 +1,251 @@
+<Project>
+  <!--
+        How to define a variable.
+            Just stick a new node in a property group.
+    -->
+  <PropertyGroup>
+    <!-- This node in a property group will define a variable -->
+    <TestVariable>Test Variable Value</TestVariable>
+
+    <!-- Adding a condition, which checks if the variable is already defined,
+             will allow you to override the variable in projects.
+             If the variable is not defined, it will evaulate to an empty string
+             within the condition and be set with the value defined here.-->
+    <TestVariableWithOverride Condition="'$(TestVariableWithOverride)' == ''">Test override.</TestVariableWithOverride>
+  </PropertyGroup>
+
+  <Target Name="main" DependsOnTargets="PrintMyVariables;PrintMSBuildVariables;Conditions;PrintPropertyFunctions;PrintOutBatching">
+    <!-- Msbuild will process the first target in the file by default.
+            By creating this target, and making it depend on the two following targets,
+            we can ensure that they will all be executed
+            -->
+  </Target>
+
+  <!--
+        How to print a message.
+    -->
+  <Target Name="PrintMyVariables">
+    <!-- Prints a basic message -->
+    <Message Text="Here is my message.."></Message>
+
+    <!-- Message importance. How messages are shown can change with the logger being used.
+        These examples use the default console logger.-->
+
+    <!-- Shows with atleast (Normal) verbosity -->
+    <Message Text="Low importance" Importance="Low" />
+
+    <!-- Shows with atleast (Normal) verbosity -->
+    <Message Text="Normal importance (This is the default)" Importance="Normal" />
+
+    <!-- Shows with atleast (Minimal) verbosity -->
+    <Message Text="High importance" Importance="High" />
+
+    <!-- Interpolates the value of the test variable into the string. -->
+    <Message Text="My test variable: $(TestVariable)" />
+  </Target>
+
+  <!--
+        Standard msbuild variables.
+    -->
+  <Target Name="PrintMSBuildVariables">
+    <Message Text="MSBuildAssemblyVersion               -> '$(MSBuildAssemblyVersion)'             " />
+
+    <!-- The absolute path of the folder where the MSBuild binaries that are currently being used are located -->
+    <Message Text="MSBuildBinPath                       -> '$(MSBuildBinPath)'                     " />
+
+    <!-- The path of the MSBuild subfolder under the \Program Files or \Program Files (x86) folder.
+        This path always points to the 32-bit \Program Files folder on a 32-bit machine and \Program Files (x86)
+        on a 64-bit machine. These two properties are the same-->
+    <Message Text="MSBuildExtensionsPath                -> '$(MSBuildExtensionsPath)'              " />
+    <Message Text="MSBuildExtensionsPath32              -> '$(MSBuildExtensionsPath32)'            " />
+
+    <!-- The path of the MSBuild subfolder under the \Program Files folder.
+        For a 64-bit machine, this path always points to the \Program Files folder.
+        For a 32-bit machine, this path is blank. -->
+    <Message Text="MSBuildExtensionsPath64              -> '$(MSBuildExtensionsPath64)'            " />
+
+    <!-- Paths to the .net framework folders, if they are installed -->
+    <Message Text="MSBuildFrameworkToolsPath            -> '$(MSBuildFrameworkToolsPath)'          " />
+    <Message Text="MSBuildFrameworkToolsPath32          -> '$(MSBuildFrameworkToolsPath32)'        " />
+    <Message Text="MSBuildFrameworkToolsPath64          -> '$(MSBuildFrameworkToolsPath64)'        " />
+    <Message Text="MSBuildFrameworkToolsRoot            -> '$(MSBuildFrameworkToolsRoot)'          " />
+
+
+    <Message Text="MSBuildLoadMicrosoftTargetsReadOnly  -> '$(MSBuildLoadMicrosoftTargetsReadOnly)'" />
+
+    <!-- The maximum number of concurrent processes that are used when building.
+        This is the value that you specified for /maxcpucount on the command line.
+        If you specified /maxcpucount without specifying a value, then MSBuildNodeCount
+        specifies the number of processors in the computer. -->
+    <Message Text="MSBuildNodeCount                     -> '$(MSBuildNodeCount)'                   " />
+
+    <Message Text="MSBuildProgramFiles32                -> '$(MSBuildProgramFiles32)'              " />
+    <Message Text="MSBuildProjectDirectory              -> '$(MSBuildProjectDirectory)'            " />
+    <Message Text="MSBuildProjectDirectoryNoRoot        -> '$(MSBuildProjectDirectoryNoRoot)'      " />
+    <Message Text="MSBuildProjectExtension              -> '$(MSBuildProjectExtension)'            " />
+    <Message Text="MSBuildProjectFile                   -> '$(MSBuildProjectFile)'                 " />
+    <Message Text="MSBuildProjectFullPath               -> '$(MSBuildProjectFullPath)'             " />
+    <Message Text="MSBuildProjectName                   -> '$(MSBuildProjectName)'                 " />
+    <Message Text="MSBuildRuntimeType                   -> '$(MSBuildRuntimeType)'                 " />
+    <Message Text="MSBuildRuntimeVersion                -> '$(MSBuildRuntimeVersion)'              " />
+    <Message Text="MSBuildSDKsPath                      -> '$(MSBuildSDKsPath)'                    " />
+    <Message Text="MSBuildStartupDirectory              -> '$(MSBuildStartupDirectory)'            " />
+
+    <!-- Gets the current file. -->
+    <Message Text="MSBuildThisFile                      -> '$(MSBuildThisFile)'                    " />
+
+    <!-- Gets the current file directory. -->
+    <Message Text="MSBuildThisFileDirectory             -> '$(MSBuildThisFileDirectory)'           " />
+
+    <Message Text="MSBuildThisFileDirectoryNoRoot       -> '$(MSBuildThisFileDirectoryNoRoot)'     " />
+    <Message Text="MSBuildThisFileExtension             -> '$(MSBuildThisFileExtension)'           " />
+    <Message Text="MSBuildThisFileFullPath              -> '$(MSBuildThisFileFullPath)'            " />
+    <Message Text="MSBuildThisFileName                  -> '$(MSBuildThisFileName)'                " />
+    <Message Text="MSBuildToolsPath                     -> '$(MSBuildToolsPath)'                   " />
+    <Message Text="MSBuildToolsPath32                   -> '$(MSBuildToolsPath32)'                 " />
+    <Message Text="MSBuildToolsPath64                   -> '$(MSBuildToolsPath64)'                 " />
+    <Message Text="MSBuildToolsRoot                     -> '$(MSBuildToolsRoot)'                   " />
+    <Message Text="MSBuildToolsVersion                  -> '$(MSBuildToolsVersion)'                " />
+    <Message Text="MSBuildUserExtensionsPath            -> '$(MSBuildUserExtensionsPath)'          " />
+    <Message Text="MSBuildVersion                       -> '$(MSBuildVersion)'                     " />
+  </Target>
+
+  <!-- Condition tests. -->
+  <Target Name="Conditions">
+    <!-- String equality -->
+    <Message Condition="yellow == 'yellow'"     Text="Quotes not required for one word.    -> yellow == 'yellow" />
+    <Message Condition="YELLOW == yellow"       Text="Case is insensitive.                 -> YELLOW == yellow" />
+    <Message Condition="red != blue"            Text="Not equals works too.                -> red != blue" />
+
+    <!-- String unary operators -->
+    <Message Condition="Exists('$(MSBuildProjectFullPath)')" Text="Checks if the file or folder exists. -> Exists('$(MSBuildProjectFullPath)')" />
+    <Message Condition="HasTrailingSlash('test\')"           Text="Checks for a trailing slash /.       -> HasTrailingSlash('test\')" />
+
+    <!-- Logical operators -->
+    <message Condition="true AND true"          Text="AND operator                         -> true AND true" />
+    <message Condition="true OR false"          Text="OR operator                          -> true OR false" />
+    <message Condition="!false"                 Text="NOT operator                         -> !false" />
+    <message Condition="(true AND false) OR true"   Text="Grouping works                       -> (true AND false) OR true" />
+  </Target>
+
+  <!-- Property Functions (You can nest them)-->
+  <Target Name="PrintPropertyFunctions">
+    <!-- There are lots of these. Most of them are just totally regular .net classes. Thanks MSDN-->
+    <Message Text="The syntax to get a property is [Class]::Property. For example $([System.Int32]::MaxValue)" />
+
+    <Message Text="Any method or property from          -> System.Byte                                  " />
+    <Message Text="Any method or property from          -> System.Char                                  " />
+    <Message Text="Any method or property from          -> System.Convert                               " />
+    <Message Text="Any method or property from          -> System.DateTime                              " />
+    <Message Text="Any method or property from          -> System.Decimal                               " />
+    <Message Text="Any method or property from          -> System.Double                                " />
+    <Message Text="Any method or property from          -> System.Enum                                  " />
+    <Message Text="Any method or property from          -> System.Guid                                  " />
+    <Message Text="Any method or property from          -> System.Int16                                 " />
+    <Message Text="Any method or property from          -> System.Int32                                 " />
+    <Message Text="Any method or property from          -> System.Int64                                 " />
+    <Message Text="Any method or property from          -> System.IO.Path                               " />
+    <Message Text="Any method or property from          -> System.Math                                  " />
+    <Message Text="Any method or property from          -> System.UInt16                                " />
+    <Message Text="Any method or property from          -> System.UInt32                                " />
+    <Message Text="Any method or property from          -> System.UInt64                                " />
+    <Message Text="Any method or property from          -> System.SByte                                 " />
+    <Message Text="Any method or property from          -> System.Single                                " />
+    <Message Text="Any method or property from          -> System.String                                " />
+    <Message Text="Any method or property from          -> System.StringComparer                        " />
+    <Message Text="Any method or property from          -> System.TimeSpan                              " />
+    <Message Text="Any method or property from          -> System.Text.RegularExpressions.Regex         " />
+    <Message Text="Any method or property from          -> Microsoft.Build.Utilities.ToolLocationHelper " />
+
+    <Message Text="These methods work too               -> System.Environment::CommandLine                " />
+    <Message Text="These methods work too               -> System.Environment::ExpandEnvironmentVariables " />
+    <Message Text="These methods work too               -> System.Environment::GetEnvironmentVariable     " />
+    <Message Text="These methods work too               -> System.Environment::GetEnvironmentVariables    " />
+    <Message Text="These methods work too               -> System.Environment::GetFolderPath              " />
+    <Message Text="These methods work too               -> System.Environment::GetLogicalDrives           " />
+    <Message Text="These methods work too               -> System.IO.Directory::GetDirectories            " />
+    <Message Text="These methods work too               -> System.IO.Directory::GetFiles                  " />
+    <Message Text="These methods work too               -> System.IO.Directory::GetLastAccessTime         " />
+    <Message Text="These methods work too               -> System.IO.Directory::GetLastWriteTime          " />
+    <Message Text="These methods work too               -> System.IO.Directory::GetParent                 " />
+    <Message Text="These methods work too               -> System.IO.File::Exists                         " />
+    <Message Text="These methods work too               -> System.IO.File::GetCreationTime                " />
+    <Message Text="These methods work too               -> System.IO.File::GetAttributes                  " />
+    <Message Text="These methods work too               -> System.IO.File::GetLastAccessTime              " />
+    <Message Text="These methods work too               -> System.IO.File::GetLastWriteTime               " />
+    <Message Text="These methods work too               -> System.IO.File::ReadAllText                    " />
+
+    <!-- Combining Paths
+        This can be a little annoying, because you're never really sure if a variable includes the final backslash.
+        To Get around this issue, you can use the regular Path.combine -->
+    <Message Text="System.IO.Path::Combine              -> $([System.IO.Path]::Combine('C:\This\Is\How\', 'You\Combine\Paths', 'to\a\file.txt'))" />
+
+    <!-- Special MSBuild operators -->
+    <Message Text="Add two values(double/int/long)      -> [MSBuild]::Add(1.5, 2.5) = $([MSBuild]::Add(1.5, 2.5))" />
+    <Message Text="Subtract two values(double/int/long) -> [MSBuild]::Subtract(7, 9) = $([MSBuild]::Subtract(7, 9))" />
+    <Message Text="Multiply two values(double/int/long) -> [MSBuild]::Multiply(5, 4) = $([MSBuild]::Multiply(5, 4))" />
+    <Message Text="Divide two values(double/int/long)   -> [MSBuild]::Divide(8, 2) = $([MSBuild]::Divide(8, 2))" />
+    <Message Text="Modulo two values(double/int/long)   -> [MSBuild]::Modulo(42, 5) = $([MSBuild]::Modulo(42, 5))" />
+
+    <!-- Haven't exactly figured out where to use these escape functions yet.. -->
+    <Message Text="Escape a string                      -> [MSBuild]::Escape(' a% b$ c@ d; e? f* ') = $([MSBuild]::Escape(' a% b$ c@ d; e? f* '))" />
+    <Message Text="Unescape a string                    -> [MSBuild]::Unescape('%25 %24 %40 %27 %3B %3F %2A') = $([MSBuild]::Unescape('%25 %24 %40 %27 %3B %3F %2A'))" />
+
+    <!-- Bitwise operations are supported -->
+    <Message Text="Bitwise Or                           -> [MSBuild]::BitwiseOr(1, 2) = $([MSBuild]::BitwiseOr(1, 2))" />
+    <Message Text="Bitwise And                          -> [MSBuild]::BitwiseAnd(3, 1) = $([MSBuild]::BitwiseAnd(3, 1))" />
+    <Message Text="Bitwise Xor                          -> [MSBuild]::BitwiseXor(1, 1) = $([MSBuild]::BitwiseXor(1, 1))" />
+    <Message Text="Bitwise Not                          -> [MSBuild]::BitwiseNot(0) = $([MSBuild]::BitwiseNot(0))" />
+
+    <!-- Nested example -->
+    <Message Text="Nested example                       -> [MSBuild]::Subtract([MSBuild]::Add(10, 5), 7) = $([MSBuild]::Subtract([MSBuild]::Add(10, 5), 7)" />
+  </Target>
+
+  <!-- Test directory-->
+  <PropertyGroup>
+    <!-- Test directory-->
+    <TestDirectory>$([System.IO.Path]::Combine('$(TMP)', 'bftestfiles\'))</TestDirectory>
+  </PropertyGroup>
+
+  <!-- Create a directory -->
+  <Target Name="CreateTestDirectory">
+    <MakeDir Directories="$(TestDirectory)" />
+  </Target>
+
+  <!-- Delete a directory, along with all files inside -->
+  <Target Name="DeleteTestDirectory" AfterTargets="PrintOutBatching">
+    <RemoveDir Directories="$(TestDirectory)" />
+  </Target>
+
+  <!-- Write to a text file -->
+  <Target Name="CreateTestFiles" DependsOnTargets="CreateTestDirectory">
+    <WriteLinesToFile File="$([System.IO.Path]::Combine('$(TestDirectory)', '1-test.txt'))" Overwrite="True" Lines="Test 1" />
+    <WriteLinesToFile File="$([System.IO.Path]::Combine('$(TestDirectory)', '2-test.txt'))" Lines="Test 2" />
+  </Target>
+
+  <!-- Perform an action for each item in a list -->
+  <Target Name="PrintOutBatching" DependsOnTargets="CreateTestFiles">
+
+    <!-- An item group which finds the .txt files we created in the test folder.
+        A dynamic item group like this one, is evalued when the task is run.
+        An item group declared directly under the project is evaluated when the project is loaded.
+        Any files which are created during the build would only show up in a dynamic item group. -->
+    <ItemGroup>
+      <WindowsDll Include="$(TMP)\**\*test.txt"></WindowsDll>
+    </ItemGroup>
+
+    <!-- Each one of these is executed for each unique value found. Because of the '%' sign.
+        Notice that identical values like RootDir are only printed once.-->
+    <Message Text="Full path                            ->  FullPath = %(WindowsDll.FullPath)" />
+    <Message Text="Root dir                             ->  RootDir = %(WindowsDll.RootDir)" />
+    <Message Text="The file name                        ->  Filename = %(WindowsDll.Filename)" />
+    <Message Text="The extension                        ->  Extension = %(WindowsDll.Extension)" />
+    <Message Text="The relative directory (include path)->  RelativeDir = %(WindowsDll.RelativeDir)" />
+    <Message Text="The full file directory              ->  Directory = %(WindowsDll.Directory)" />
+    <Message Text="Recursive directory (only if \**\)   ->  RecursiveDir = %(WindowsDll.RecursiveDir)" />
+    <Message Text="Identity (Path from include)         ->  Identity = %(WindowsDll.Identity)" />
+    <Message Text="The modified time                    ->  ModifiedTime = %(WindowsDll.ModifiedTime)" />
+    <Message Text="The created time                     ->  CreatedTime = %(WindowsDll.CreatedTime)" />
+    <Message Text="The accessed time                    ->  AccessedTime = %(WindowsDll.AccessedTime)" />
+  </Target>
+</Project>

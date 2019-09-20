@@ -1,0 +1,54 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Thunder.BuildSystem.Sdk" />
+
+  <!-- Reference engineering stuffs -->
+  <Import Project="$(RepositoryEngineeringDir)\Package.props" />
+  <Import Project="$(RepositoryEngineeringDir)\Versions.props" />
+  <Import Project="$(RepositoryEngineeringDir)\ProjectReferences.props" Condition="Exists('$(RepositoryEngineeringDir)\ProjectReferences.props')"/>
+
+  <PropertyGroup>
+    <Product>Thunder Build</Product>
+
+    <Authors>Toan Nguyen</Authors>
+    <Copyright>© 2019-2020 Toan Nguyen. All rights reserved.</Copyright>
+
+    <!-- Suppress warnings about using SemVer 2.0. -->
+    <NoWarn>$(NoWarn);NU5105</NoWarn>
+
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+  </PropertyGroup>
+
+  <!-- Source code settings -->
+  <PropertyGroup>
+    <RepositoryUrl>https://github.com/orientsoftwaredevelopment/ThunderBuild</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <LangVersion>7.3</LangVersion>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\ThunderBuild.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <!-- Defines project type conventions. -->
+  <PropertyGroup>
+    <IsBenchmarkProject Condition="$(MSBuildProjectName.EndsWith('.Benchmarks'))">true</IsBenchmarkProject>
+    <IsUnitTestProject Condition="$(MSBuildProjectName.EndsWith('.Tests'))">true</IsUnitTestProject>
+    <IsFunctionalTestProject Condition="$(MSBuildProjectName.EndsWith('.FunctionalTests'))">true</IsFunctionalTestProject>
+    <IsTestProject Condition="'$(IsUnitTestProject)'  == 'true' OR '$(IsFunctionalTestProject)'  == 'true' OR '$(IsBenchmarkProject)'  == 'true'">true</IsTestProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateCommitHashAttribute Condition="'$(RepositoryCommit)'==''">false</GenerateCommitHashAttribute>
+    <GenerateSourceLinkFile>false</GenerateSourceLinkFile>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopAnalyzersPackageVersion)" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Include="$(MSBuildThisFileDirectory)\LICENSE.txt" Pack="true" PackagePath="LICENSE.txt"/>
+  </ItemGroup>
+</Project>

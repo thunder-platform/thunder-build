@@ -1,0 +1,6 @@
+{
+  "$schema": "https://github.com/orientsoftwaredevelopment/ThunderBuild/blob/master/eng/tools/thunder.schema.json",
+  "common": {
+    "project": "Thunder Build"
+  }
+}

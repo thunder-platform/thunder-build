@@ -1,0 +1,11 @@
+{
+  "sdk": {
+    "version": "2.2.401"
+  },
+  "tools": {
+    "dotnet": "2.2.401"
+  },
+  "msbuild-sdks": {
+    "Thunder.BuildSystem.Sdk": "1.0.0-preview.121"
+  }
+}

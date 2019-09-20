@@ -1,0 +1,28 @@
+<Project>
+  <PropertyGroup>
+    <!--
+      When UseInfrastructurePackageReferences = true, the system will use PackageReference to infrastructure projects instead of ProjectReference.
+      This mode is usually used for Function team to develop features in Areas folder.
+    -->
+    <UseInfrastructurePackageReferences Condition=" '$(UseInfrastructurePackageReferences)' == '' ">false</UseInfrastructurePackageReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_InfrastructurePackageReferences Include="@(InfrastructurePackageReference)" Condition=" '$(UseInfrastructurePackageReferences)' == 'true' " />
+
+    <_UnusedProjectReferenceProvider Include="@(ProjectReferenceProvider)" Exclude="@(Reference)"/>
+    <_ProjectReferenceByAssemblyName Include="@(ProjectReferenceProvider)" Exclude="@(_UnusedProjectReferenceProvider)" />
+
+    <_UnusedInfrastructurePackages Include="@(InfrastructurePackageReference)" Exclude="@(Reference)"/>
+    <_InfrastructureProjectReferenceByAssemblyName Include="@(_InfrastructurePackageReferences)" Exclude="@(_UnusedInfrastructurePackages)" />
+
+    <!-- When UseInfrastructurePackageReferences = true, the infrastructure projects should be referenced as PackageReference at ResolveCustomReferences target. -->
+    <_ProjectReferenceByAssemblyName Remove="@(_InfrastructureProjectReferenceByAssemblyName)" />
+
+    <ProjectReference Include="@(_ProjectReferenceByAssemblyName->'%(ProjectPath)')" />
+    <Reference Remove="@(_ProjectReferenceByAssemblyName)" />
+
+    <PackageReference Include="@(_InfrastructureProjectReferenceByAssemblyName->'%(Identity)')" />
+    <Reference Remove="@(_InfrastructureProjectReferenceByAssemblyName)" />
+  </ItemGroup>
+</Project>

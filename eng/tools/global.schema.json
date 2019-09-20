@@ -1,0 +1,36 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-06/hyper-schema",
+    "type": "object",
+    "title": "Config file for ThunderBuild",
+    "required": [
+        "port"
+    ],
+    "properties": {
+        "database": {
+            "$id": "#/properties/database",
+            "type": "object",
+            "title": "The Database Schema",
+            "required": [
+                "port",
+                "key"
+            ],
+            "properties": {
+                "port": {
+                    "$id": "#/properties/database/properties/port",
+                    "type": "string",
+                    "title": "The Port Schema",
+                    "default": "8888",
+                    "pattern": "^(.*)$"
+                },
+                "key": {
+                    "$id": "#/properties/database/properties/key",
+                    "type": "string",
+                    "title": "The Key Schema",
+                    "default": "LTQgx4CUBovz9PW0pHIIfg==",
+                    "pattern": "^(.*)$"
+                }
+            }
+        }
+    }
+}

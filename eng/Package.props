@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildOutputTargetFolder>Tools</BuildOutputTargetFolder>
+    <IncludeBuildOutput>False</IncludeBuildOutput>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>This package contains MSBuild targets and tasks for building and publishing ASP.NET Core projects. This package is required for building and publishing ASP.NET Core projects.</Description>
+    <ProjectUrl>https://dev.azure.com/orientsoftwaredevelopment/ThunderPlatform/_git/ThunderBuild</ProjectUrl>
+    <!-- <PackageIconUrl>http://go.microsoft.com/fwlink/?LinkID=288859</PackageIconUrl> -->
+    <PackageTags>ThunderSdk</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>build</VersionSuffix>
+    <BuildNumber Condition="'$(BuildNumber)' == ''">t000</BuildNumber>
+    <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
+  </PropertyGroup>
+</Project>
