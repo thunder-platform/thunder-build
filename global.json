@@ -6,6 +6,6 @@
     "dotnet": "2.2.401"
   },
   "msbuild-sdks": {
-    "Thunder.BuildSystem.Sdk": ""
+    "Thunder.BuildSystem.Sdk": "1.0.0-preview.318"
   }
 }

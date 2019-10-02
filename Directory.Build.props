@@ -23,7 +23,7 @@
 
   <!-- Source code settings -->
   <PropertyGroup>
-    <RepositoryUrl>https://github.com/orientsoftwaredevelopment/ThunderBuild</RepositoryUrl>
+    <RepositoryUrl>https://github.com/thunder-platform/thunder-build</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\ThunderBuild.ruleset</CodeAnalysisRuleSet>
