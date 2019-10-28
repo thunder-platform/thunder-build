@@ -1,0 +1,24 @@
+name: $(Date:yyyyMMdd)$(rev:.r)
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  packageToPush: '$(Build.SourcesDirectory)/artifacts/packages/Release/Shipping/*.nupkg;!$(Build.SourcesDirectory)/artifacts/packages/Release/Shipping/*.symbols.nupkg'
+
+steps:
+- task: CmdLine@2
+  inputs:
+    script: '$(Build.SourcesDirectory)/src/package.cmd -r -rebuild -pack /p:Version=$(thunder.thunderBuildPackageVersion).$(Build.BuildNumber) /p:Configuration=Release'
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '5.2.0'
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: $(packageToPush)
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NuGet'
